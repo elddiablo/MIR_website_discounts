@@ -109,7 +109,6 @@
           </div>
         </div> <!-- row -->
     <div id="hide_on_search">
-      <!-- <?php var_dump($most_popular_countires); ?> -->
         
         <div class="row mt-2">
 

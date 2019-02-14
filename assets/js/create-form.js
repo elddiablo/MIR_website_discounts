@@ -8,9 +8,6 @@ $('#city_div').hide();
 
 if ($( "#country_select select" ).length === 0) {
   
-              
-            
-  
   if ($('#valid_errors').html() !== "") {
     $('#valid_errors').toggleClass('contact-form');
   } else {
