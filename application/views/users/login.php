@@ -14,23 +14,23 @@
                 <?php echo '<p class="alert alert-success">'.$this->session->flashdata('logout_successful').'</p>'; ?>
               <?php endif; ?>
               <div class="card card-login ml-auto mt-5">
-              <div class="card-header"><h2 class="font-alt text-center">Вход</h2></div>
+              <div class="card-header"><h2 class="font-alt text-center">Login</h2></div>
               <div class="card-body">
                 <?php echo validation_errors(); ?>
 
                 <?php echo form_open('users/login'); ?>
 
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Логин</label>
+                    <label for="exampleInputEmail1">Username</label>
                     <input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Username" name="username">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputPassword1">Пароль</label>
+                    <label for="exampleInputPassword1">Password</label>
                     <input class="form-control" id="exampleInputPassword1" type="password" placeholder="Password" name="password">
                   </div>
                 <div class="row">
-                  <div class="col-6"><a href="<?php echo base_url(); ?>" class="btn btn-theme">На главную</a></div>
-                  <div class="col-6"><input type="submit" class="btn btn-success float-right" value="Войти"></div>
+                  <div class="col-6"><a href="<?php echo base_url(); ?>" class="btn btn-theme">Navigate Back</a></div>
+                  <div class="col-6"><input type="submit" class="btn btn-success float-right" value="Submit"></div>
                 </div>
                   
                 </form>

@@ -34,6 +34,9 @@
 
 <!-- Body Start -->
 <body data-spy="scroll">
+<!-- jQuery -->
+  <script src="<?= base_url(); ?>assets/js/jquery-3.2.1.min.js"></script>
+  <script src="<?= base_url(); ?>assets/js/jquery-migrate-3.0.0.min.js"></script>
 
   <!-- Loading -->
   <div id="loading">
@@ -46,7 +49,7 @@
     <nav class="navbar header-nav fixed-top navbar-expand-lg">
       <div class="container">
         <!-- Brand -->
-        <a class="navbar-brand" href="<?= base_url(); ?>">Название <span class="theme-bg"></span></a>
+        <a class="navbar-brand" href="<?= base_url(); ?>">Untitled <span class="theme-bg"></span></a>
         <!-- / -->
 
         <!-- Mobile Toggle -->
@@ -60,18 +63,12 @@
         <!-- Top Menu -->
         <div class="collapse navbar-collapse justify-content-end" id="navbarshark">
           <ul class="navbar-nav">
-            <!-- <li><a class="nav-link active" href="index.html#home">Главная</a></li> -->
-            <!-- <li><a class="nav-link" href="index.html#contact">Контакты</a></li> -->
             <li>
-              <a class="btn btn-success" href="<?php echo base_url(); ?>home_users">Пользователям</a>
+              <a class="btn btn-success" href="<?php echo base_url(); ?>home_users">Users</a>
             </li>
 
-            <li><a class="btn btn-theme" href="<?php echo base_url(); ?>home_partners">Партнерам</a></li>
+            <li><a class="btn btn-theme" href="<?php echo base_url(); ?>home_partners">Partners</a></li>
 
-            
-            <!-- <li><a class="nav-link" href="index.html#portfolio">Portfolio</a></li>
-            <li><a class="nav-link" href="index.html#team">Our Team</a></li>
-            <li><a class="nav-link" href="index.html#blog">Blog</a></li> -->
             
           </ul>
         </div>

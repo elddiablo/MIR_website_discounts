@@ -7,15 +7,9 @@
 
 			$found_object = $this->object_model->get_object_by_id($valid_id);
 
-			if(!$this->object_model->update_popularity_counter($id)){
-
-				die("Eror while updating a pop_counter in database");
-
-			} // increase a popularity counter by 1 point up;
-
 			if(empty($found_object)) {
 
-				$message = 'No results found...';
+				$message = 'No object found...';
 
 				$object_type_single = null;
 
@@ -27,6 +21,8 @@
 
 				
 			} else {
+
+				$this->object_model->update_popularity_counter($id);
 
 				$object_type_single = $this->object_model->get_object_type_by_inst_id($found_object->obj_inst_id);
 
@@ -41,15 +37,12 @@
 			}
 
 			$data = [
-					'object' => $found_object,
-					'object_type' => $object_type,
-					'phones' => $phones,
-					'images' => $images,
-					'message' => $message
-				];
-
-			
-			// var_dump($found_object->status);
+				'object' => $found_object,
+				'object_type' => $object_type,
+				'phones' => $phones,
+				'images' => $images,
+				'message' => $message
+			];
 
 
 			# IF: there is some Results
@@ -130,19 +123,9 @@
 
 			}
 
-			// $country_name = $this->search_model->get_country_name_by_id($country_id);
-
-			// $city_name = $this->search_model->get_city_name_by_id($id);
-
-			// $inst_name = $this->search_model->get_inst_name_by_id($id);
-
-			// if (!empty($name) && !empty($discount) && !empty($owner_name) && !empty($phone_number) && !empty($adress) && !empty($website) && !empty($short_describtion) && !empty($full_describtion)) {
-
 			# IF GET(USER_ID) == SESSION[USER_ID] { DOWNLOAD #1 TEMPLATE }
 			# ELSE IF USER_ID !== SESSION[USER_ID] { SHOW ERROR AND REDIRECT TO HOME }
 			# ELSE { SHOW THE USUAL FORM }
-
-				
 
 				if (!empty($country_id) && !empty($city_id) && !empty($inst_id)) {
 					$has_data = true;
@@ -176,11 +159,7 @@
 				
 
 
-            // --------___------___-----____--- AJAX  --------___------___-----____--- //
-            // --------___------___-----____--- AJAX  --------___------___-----____--- //
-           	// --------___------___-----____--- AJAX  --------___------___-----____--- //
-            // --------___------___-----____--- AJAX  --------___------___-----____--- //
-
+// --------___------___-----____--- AJAX  ERROR CHECKING --------___------___-----____--- //
 
             if($this->input->is_ajax_request()){
 
@@ -204,8 +183,6 @@
 
 				];
 
-				// var_dump($errors);
-
 				if (!empty($errors[0])) {
 
 					$this->load->view('ajax/ajax_create_response', $response);
@@ -226,13 +203,12 @@
 
 				}
 
-				
-				// --------___------___-----____--- ENDING --------___------___-----____--- //
-
-
 			} else {
 
-				$this->form_validation->set_rules('name', 'Name', 'required|validate_name');
+
+// --------___------___-----____--- ENDING --------___------___-----____--- //
+
+			$this->form_validation->set_rules('name', 'Name', 'required|validate_name');
 
 			$this->form_validation->set_rules('discount', 'Discount', 'required');
 
@@ -293,27 +269,8 @@
 
             }
 
-
-			}
-
-
-			
-
-			// -----------------
-			// Validation Errors
-			// -----------------
-
-            
-
-			
-
-
-
-
-
-
-// 
 		}
+	}
 
 		public function submit_object() {
 
@@ -368,12 +325,14 @@
 					'obj_id' => $object_id,
 					'is_ajax_successful' => $is_ajax_successful
 				];
+
 				if ($is_ajax_successful) {
 					$this->load->view('pages/add_photos', $data);
 				} else {
 					$this->load->view('templates/header');
 					$this->load->view('pages/add_photos', $data);
 					$this->load->view('templates/footer');
+					$this->load->view('templates/additional-footer-standart');
 				}
 
 
@@ -400,10 +359,6 @@
 
 	        	$this->upload->initialize($config);
 
-	        	// echo "<pre>";
-	        	// print_r ($_FILES);
-	        	// echo "</pre>";
-
                	$number_of_files = count($_FILES['userfile']['name']);
                	$files = $_FILES;
 
@@ -423,12 +378,9 @@
 	               		}
 	               		else {
 	               			$data = array('upload_data' => $this->upload->data());
-	               			// echo "<br> success";
 	               			$this->object_model->add_images_to_object($this->input->post('obj_id'), $_FILES['userfile']['name']);
 	               		}
                			
-
-
                	}
 
                	$data = [
@@ -456,39 +408,27 @@
 		 	$name = $this->security->xss_clean($this->input->post('name'));
 		 	$object_name = $this->object_model->get_object_by_id($this->security->xss_clean($this->input->post('object_id')))->obj_title;
 		 	$object_owner_email = $this->object_model->get_object_by_id($this->security->xss_clean($this->input->post('object_id')))->obj_owner_email;
-
 		 	$generated_key = $this->generate_key();
-
-		 	
 
 		 	// Setting the config
 		 	$this->mailSetUp();
 				
-
-			
-
 			// Sending an email to the user
-		 	
 		 	$this->email->from('test@hotel-shato.od.ua', 'M.I.R.');
 		 	$this->email->to($email);
-		 	
 		 	$this->email->subject('MIR - Discount at'. $object_name);
 		 	$this->email->message('Hi, '. $name .', your discount code: '. $generated_key. ' You can show this code to the owner of the object or place you chose, and you should be given an appropriate discount as shown on our website.'. ' Thanks for being with us!');
-		 	
 		 	$this->email->send();
 
 
-		 	// Setting the config
-		 	$this->mailSetUp();
-
-		 	// Sending an email to the Owner
-		 	$this->email->from('test@hotel-shato.od.ua', 'M.I.R.');
-		 	$this->email->to($object_owner_email);
-		 	
-		 	$this->email->subject('MIR - Discount at'. $object_name);
-		 	$this->email->message('Hi, owner of the '. $object_name .', you have a customer with this code: '. $generated_key. ' this is the code a customer received after visiting your object, be ready to meet this customer soon.'. ' Thanks for being with us!');
-		 	
-		 	$this->email->send();
+		 	// Sending to 
+		 		/*
+				 	$this->mailSetUp();
+				 	$this->email->from('test@hotel-shato.od.ua', 'M.I.R.');
+				 	$this->email->to($object_owner_email);
+				 	$this->email->subject('MIR - Discount at'. $object_name);
+				 	$this->email->message('Hi, owner of the '. $object_name .', you have a customer with this code: '. $generated_key. ' this is the code a customer received after visiting your object, be ready to meet this customer soon.'. ' Thanks for being with us!');
+				 	$this->email->send(); */
 
 
 		 redirect('/get_discount_success_page');
@@ -546,20 +486,7 @@
 
 			$this->email->initialize($config);
 				
-			
-		
-			
-			
-
 		}
-
-
-
-		
-
-
-
-		
 
 	}
 

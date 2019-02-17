@@ -10,15 +10,13 @@
             	<?php echo form_open_multipart('objects/do_upload');?>
             	<div class="row">
             		<div class="col-md-6">
-            			
-						<div class="upload_field">
-							<label id="image_input">
-								<i class="fas fa-cloud-upload-alt fa-2x"></i> 
-								<span id="inner_text">Выбрать фото</span>
-						    	<input type="file" name="userfile[]" class="hidden file">
-						    </label> 
-						    
-						</div>
+      						<div class="upload_field">
+      							<label id="image_input">
+      								<i class="fas fa-cloud-upload-alt fa-2x"></i> 
+      								<span id="inner_text">Выбрать фото</span>
+    						    	<input type="file" name="userfile[]" class="hidden file">
+    						    </label> 
+      						</div>
             		</div>
             		<div class="col-md-6">
             			<a id="add_photo_field" class="btn"><i class="fa fa-plus fa-2x"></i></a>
@@ -67,8 +65,7 @@
 								<i class="fas fa-cloud-upload-alt fa-2x"></i> 
 								<span id="inner_text">Выбрать фото</span>
 						    	<input type="file" name="userfile[]" class="hidden file">
-						    </label> 
-						    
+					    </label> 
 						</div>
             		</div>
             		<div class="col-md-6">
@@ -91,16 +88,17 @@
         </div>
       </div>
     </section>
-
-    <script>$('input.file').change(function() {
-  $('#inner_text').remove();
-  $(this).toggleClass('hidden');
-});
-
-$('#add_photo_field').click(function() {
-  $('.additional_uploads').append("<div class='col-md-6'><label id='image_input'><i class='fas fa-cloud-upload-alt fa-2x'></i><input type='file' name='userfile[]'></label></div>");
-});</script>
-
-
-
 <?php } ?>
+
+    <script>
+      jQuery(document).ready(function($) {
+          $('input.file').change(function() {
+          $('#inner_text').remove();
+          $(this).toggleClass('hidden');
+        });
+
+        $('#add_photo_field').click(function() {
+          $('.additional_uploads').append("<div class='col-md-6'><label id='image_input'><i class='fas fa-cloud-upload-alt fa-2x'></i><input type='file' name='userfile[]'></label></div>");
+        });
+      });
+    </script>

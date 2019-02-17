@@ -19,7 +19,7 @@ if ($( "#country_select select" ).length === 0) {
 } else {
     $( "#country_select select" ).change(function() {
 
-    $('#select_spy').html('Выберите город');
+    $('#select_spy').html('Select City');
 
     if ($( "#inst_select select" ).length > 0) {
 
@@ -53,7 +53,7 @@ if ($( "#country_select select" ).length === 0) {
 function citySelect(){
   $( "#city_select select" ).change(function() {
 
-    $('#select_spy').html('Выберите Предприятие');
+    $('#select_spy').html('Select Institution');
 
     $.ajax({
       url: '/search/get_institutions',
@@ -88,11 +88,7 @@ function showAdditionalInputs(){
   $('#create_button').show();
   $('#create_button_ajax_call').show('400', function() {
     $(this).click(function() {
-      
       createObjectCall();
-
-      
-      
     });
   });
   
@@ -135,12 +131,6 @@ function createObjectCall() {
         if (is_ajax_successful) {$('#inputs').html("");
 
       }
-
-
-        
-
-        
-
     }); 
   
   

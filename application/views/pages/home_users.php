@@ -10,10 +10,10 @@
         <div class="row justify-content-center full-screen">
           <div class="col-md-10">
             <div class="home-text-center text-center feature-box-02">
-              <h1 class="font-alt">Название</h1>
+              <h1 class="font-alt">Company</h1>
               <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h3>
               <div class="btn-bar">
-                <a href="index.html#services" class="btn btn-theme">Начать Искать</a>
+                <a href="index.html#services" class="btn btn-theme">Search</a>
               </div>
             </div> <!-- home-text-center -->
           </div> <!-- col -->
@@ -28,7 +28,7 @@
         <div class="row justify-content-center align-items-center">
           <div class="col-md-6">
             <div class="about-left m-b-30px-md">
-              <h1 class="font-alt">About Shark</h1>
+              <h1 class="font-alt">About MIR</h1>
               <h2 class="font-alt">Lorem Ipsum is simply dummy text of the.</h2>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -87,14 +87,14 @@
         <div class="row justify-content-center">
           <div class="col-12 col-md-10 col-lg-7">
             <div class="section-title text-center">
-              <h2 id="select_spy">Выберите Страну</h2>
-              <p>Выберите одну из предоставленных стран в списке.</p>
+              <h2 id="select_spy">Select Country</h2>
+              <p>Select one of the countries on the list.</p>
               <div class="select-area mb-3" id="country_select">
                 <select class="form-control" name="country_id">
-                  <option value="none">Страна</option>
-                  <option value="1">Турция</option>
-                  <option value="2">Украина</option>
-                  <option value="3">Франция</option>
+                  <option value="none">None</option>
+                  <option value="1">Turkey</option>
+                  <option value="2">Ukraine</option>
+                  <option value="3">France</option>
                 </select>
               </div>    
               <div class="select-area mt-3" id="city_select">
@@ -103,7 +103,7 @@
               <div class="select-area mt-3" id="inst_select">
                 
               </div>    
-              <a onclick="navigateToResults()" href="#" class="btn btn-success mt-3" id="submit_button" type="submit">Поиск</a>
+              <a onclick="navigateToResults()" href="#" class="btn btn-success mt-3" id="submit_button" type="submit">Search</a>
             </div>
 
           </div>
@@ -130,7 +130,7 @@
            
           </div>
             <div class="text-center">
-              <p class="font-alt-custom-heading cstm-background"><i class="flash_animation fas fa-exclamation"></i> Часто посещаемые объекты <i class="flash_animation fas fa-exclamation"></i></p>
+              <p class="font-alt-custom-heading cstm-background"><i class="flash_animation fas fa-exclamation"></i> Most Popular Objects <i class="flash_animation fas fa-exclamation"></i></p>
             </div>  
           
         </div> 
@@ -145,7 +145,7 @@
         <div class="row justify-content-center" id="results_title">
           <div class="col-12 col-md-10 col-lg-7">
             <div class="section-title text-center m-b-80px m-b-60px-md">
-              <h2>Результаты Поиска</h2>
+              <h2>Search Results</h2>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi </p>
             </div>
           </div>
@@ -159,7 +159,7 @@
                 <input type="hidden" name="city_id" value="" id="city_select_more_field">
                 <input type="hidden" name="inst_id" value="" id="inst_select_more_field">
                 <!-- <a class="btn btn-theme" href="#" id="show_more_results">Больше</a> -->
-                <input type="submit" class="btn btn-theme" value="Больше">
+                <input type="submit" class="btn btn-theme" value="More">
               </form>
               
             </div>

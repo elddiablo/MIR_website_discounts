@@ -12,7 +12,7 @@
 
 			} else {
 
-				$object_owner_email = $new_object['owner_email']; 
+				$object_owner_email = $new_object['owner_email'];
 
 				$new_user = [
 					'name' => $new_object['owner_name'],
@@ -20,8 +20,6 @@
 					'email' => $new_object['owner_email'],
 	    			'password' => $new_object['owner_password']
     			];
-
-
 
     			$this->user_model->register($new_user);
 
@@ -46,10 +44,13 @@
 
 			];
 
+		// inserting new obj
 			$this->db->insert('objects', $insert_array);
 
+		// Searching for that same object 
 			$result = $this->db->get_where('objects', $insert_array);
 
+		// Getting new object's id
 			$new_obj_id = $result->row()->obj_id;
 
 			$phone_number = $new_object['phone_number'];
@@ -62,24 +63,14 @@
 				'obj_id' => $new_obj_id
 			];
 
-			$is_created = null;
-
-			if ($this->db->insert('phones', $contact)) {
-				$is_created = true;
-			} else {
-				$is_created = false;
-			}
+			$is_created = $this->db->insert('phones', $contact) ? true : false;
 
 			$created_object = [
 				'is_created' => $is_created,
 				'obj_id' => $new_obj_id,
 				'obj_user_id' => $new_obj_id = $result->row()->obj_user_id,
-				
+				'username' => !empty($new_user) ? $new_user['username'] : null
 			];
-
-			if ($new_user) {
-				$created_object['username'] = $new_user['username'];
-			}
 
 			return $created_object;
 
@@ -102,8 +93,6 @@
 				$query = $this->db->query("SELECT obj_country_id, obj_id, obj_title FROM objects WHERE obj_id =". $object["obj_id"]);
 
 				$object = $query->result_array();
-
-				// die(var_dump($object));
 
 				$country = $this->get_object_country_by_country_id($object[0]['obj_country_id']);
 
@@ -130,21 +119,17 @@
 				$this->db->delete('images');
 			}
 
-			$this->db->where('obj_id', $id);
+			$this->db->delete('objects', array('obj_id' => $id));
 
-			$result = null;
+			$has_deleted_contacts = $this->delete_object_phones_by_obj_id($id);
 
-			if ($this->db->delete('objects')) {
-				$result = true;
-			} else { 
-				$result = false;
-			}
-
-			// add deleting contactds functionality
-
-			return $result;
+			return $has_deleted_contacts;
 
 
+		}
+
+		public function delete_object_phones_by_obj_id($id) {
+			return $this->db->delete('phones', array("obj_id" => $id)) ? true : false;
 		}
 
 		public function get_all_objects() {
@@ -153,21 +138,14 @@
 		}
 
 		public function get_user_objects($user_id) {
-
 			$user = $this->db->get_where('users', array('id' => $user_id));
-
 			$user_id = $user->row()->id;
-
 			$user_objects = $this->db->get_where('objects', array('obj_user_id' => $user_id));
 
 			if (!empty($user_objects)) {
-
 				$result = $user_objects->result_array();
-
 			} else {
-
 				$result = null;
-
 			}
 
 			return $result;
@@ -184,49 +162,30 @@
 			$result = $this->db->get_where('objects', array('obj_id' => $id));
 
 			if (!empty($result)) {
-
 				return $result->row();
-
 			} else {
-
 				return false;
-
 			}
-
-			
-
 		}
 
 		public function get_object_name_by_id($id) {
-
 			$result = $this->db->get_where('objects', array('obj_id' => $id));
-
 			return $result->row()->obj_title;
-
 		}
 
 		public function get_object_type_by_inst_id($id) {
-
 			$result = $this->db->get_where('institutions', array('id' => $id));
-
 			return $result->row();
-
 		}
 
 		public function get_object_city_by_city_id($id) {
-
 			$result = $this->db->get_where('cities', array('id' => $id));
-
 			return $result->row();
-
 		}
 
 		public function get_object_country_by_country_id($id) {
-
 			$result = $this->db->get_where('countries', array('id' => $id));
-
 			return $result->row();
-
 		}
 
 		public function get_object_phones_by_obj_id($id) {
@@ -240,17 +199,13 @@
 		}
 
 		public function get_object_images($id) {
-
 			$result = $this->db->get_where('images', array('obj_id' => $id));
 			return $result->result_array();
-
 		}
 
 		public function get_object_num_of_images($id) {
-
 			$result = $this->db->get_where('images', array('obj_id' => $id));
 			return $result->num_rows();
-
 		}
 
 		public function submit_object($id) {
@@ -264,40 +219,21 @@
 		}
 
 		public function update_popularity_counter($object_id){
-
 			$result = $this->db->get_where('objects', array('obj_id' => $object_id));
-
 			$old_counter = $result->row()->pop_counter;
-
-			$raised_counter = ($result->row()->pop_counter) + 1; // raise popularity counter by 1.
+			$raised_counter = $old_counter + 1; // raise popularity counter by 1.
 
 			$data = [
 				'pop_counter' => $raised_counter
 			];
 
 			$this->db->where('obj_id', $object_id);
-
 			$this->db->update('objects', $data);
 
-			$old_counter !== $raised_counter ? $hasChanged = true :  $hasChanged = false;
+			$hasChanged = $old_counter !== $raised_counter ? true : false;
 
-			if($hasChanged){
-
-				return true;
-
-			} else {
-
-				return false;
-
-			}
-
+			return $hasChanged;
 
 		}
-
-
-
-
-
-
 
 	}

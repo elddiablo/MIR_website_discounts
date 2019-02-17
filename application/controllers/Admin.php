@@ -19,11 +19,8 @@
 					];
 			
 				$this->load->view('admin/templates/header');
-
 				$this->load->view('templates/ajax_call_create_window');
-
 				$this->load->view('admin/dashboard', $data);
-
 				$this->load->view('admin/templates/footer');
 
 			} else {
@@ -56,13 +53,11 @@
 
 			} else {
 				// Get and Sanitize input 
-				$password = $this->security->xss_clean($this->input->post('password'));
-				$username = $this->security->xss_clean($this->input->post('username'));
-				// Hash the given password
+					$password = $this->security->xss_clean($this->input->post('password'));
+					$username = $this->security->xss_clean($this->input->post('username'));
 
-				// $password = $this->hashPassword($password);
 				// Find a user_id if the hashedPassword and username matches
-				$hashed_password = $this->user_model->hashPassword($password);
+					$hashed_password = $this->user_model->hashPassword($password);
 
 				$user_data = [
 
@@ -97,25 +92,13 @@
 		 }
 	}
 
-		public function logout() {
+	public function logout() {
 
-			$this->user_model->logoutUser();
+		$this->user_model->logoutUser();
 
-			redirect('admin/login','refresh');
-		}
+		redirect('admin/login','refresh');
+	}
 
-		
-		
-
-		public function test() {
-
-			print_r($this->session->userdata());
-
-		}
-
-
-
-		
-	}	
+}		
 
 	

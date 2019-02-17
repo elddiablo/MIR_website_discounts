@@ -15,11 +15,11 @@
             </div>
           <div class="col-md-6">
             <div class="about-left m-b-30px-md">
-              <h1 class="font-alt"><?php echo $object->obj_title; ?> - <button class="btn btn-danger">Скидка <?php echo $object->obj_discount; ?>%</button></h1>
+              <h1 class="font-alt"><?php echo $object->obj_title; ?> - <button class="btn btn-danger">Discount <?php echo $object->obj_discount; ?>%</button></h1>
               <h2 class="font-alt single-object_type"><?php echo $object_type; ?></h2>
               <p class="single-object_short_describition"><?php echo $object->obj_short_describtion; ?></p>
               <p class="m-b-20px"><?php echo $object->obj_describtion; ?></p>
-              <a href="index.html#send_message" class="btn btn-theme">Получить скидку</a>
+              <a href="index.html#send_message" class="btn btn-theme">Get Discount</a>
             </div> 
           </div>
           
@@ -31,10 +31,10 @@
             <div class="feature-box">
               <i class="icon far fa-address-book"></i>
               <div class="feature-content">
-                <h5 class='font-alt'>Контакты</h5>
+                <h5 class='font-alt'>Contacts</h5>
                 <?php foreach ($phones as $phone): ?>
                   <div class="contact pb-2">
-                    <p class="font-alt">Имя: <?php echo $phone['phone_name']; ?></p>
+                    <p class="font-alt">Name: <?php echo $phone['phone_name']; ?></p>
                     <a class='font-alt' href="tel:<?php echo $phone['phone_number']; ?>"><?php echo $phone['phone_number']; ?></a>
                     
                   
@@ -52,7 +52,7 @@
             <div class="feature-box">
               <i class="icon far fa-map"></i>
               <div class="feature-content">
-                <h5 class='font-alt'>Адрес</h5>
+                <h5 class='font-alt'>Adress</h5>
                 <p class="font-alt"><?php echo $object->obj_location; ?></p>
               </div>
             </div>
@@ -63,7 +63,7 @@
               <!-- <i class="icon ti-layout"></i> -->
               <i class="icon fas fa-columns"></i>
               <div class="feature-content">
-                <h5 class='font-alt'>Сайт</h5>
+                <h5 class='font-alt'>Website</h5>
                 <a href="http://<?php echo $object->obj_website_url; ?>" class='font-alt'><?php echo $object->obj_title; ?>.com</a>
               </div>
             </div>
@@ -79,8 +79,8 @@
         <div class="row justify-content-center">
           <div class="col-12 col-md-10 col-lg-7">
             <div class="section-title text-center m-b-60px m-b-70px-md">
-              <h2 class="font-alt">Получите скидку!</h2>
-              <p class="font-alt">Все что вы должны сделать <br>это ввести свой email с именем в поля ниже.</p>
+              <h2 class="font-alt">Recieve discount!</h2>
+              <p class="font-alt">All you need to do <br>is type in your email and name.</p>
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@
                 <div class="col-12">
                   <div class="form-group">
                     <input type="hidden" name="object_id" value="<?= $object->obj_id; ?>">
-                    <input name="name" placeholder="Имя" class="form-control" type="text">
+                    <input name="name" placeholder="Name" class="form-control" type="text">
                   </div>  
                 </div>
                 <div class="col-12">
@@ -103,7 +103,7 @@
                   </div>  
                 </div>
                 <div class="col-12 pt-3 text-center">
-                    <input type="submit" class="btn btn-theme" value="Получить">
+                    <input type="submit" class="btn btn-theme" value="Get">
                 </div>
               </div>
               </form>

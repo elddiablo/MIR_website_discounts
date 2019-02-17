@@ -53,7 +53,7 @@
            ?>    
         <?php } else { ?> 
   
-            Админ-панель
+            Admin-Panel
               
         <?php } ?>
         <span class="theme-bg"></span></a>
@@ -73,10 +73,10 @@
             <!-- <li><a class="nav-link active" href="index.html#home">Главная</a></li> -->
             <!-- <li><a class="nav-link" href="index.html#contact">Контакты</a></li> -->
             <li>
-              <a class="btn btn-theme" href="<?php echo base_url(); ?>home_users">На главную</a>
+              <a class="btn btn-theme" href="<?php echo base_url(); ?>home_users">Home</a>
             </li>
             <li>
-              <a class="btn btn-theme" href="<?php echo base_url(); ?>admin/logout">Выйти <i class="fas fa-sign-out-alt"></i></a>
+              <a class="btn btn-theme" href="<?php echo base_url(); ?>admin/logout">Logout <i class="fas fa-sign-out-alt"></i></a>
             </li>
 
 
@@ -97,29 +97,6 @@
 
   <!-- Main Start -->
   <main>
-      <!-- Flash messages -->
-      <?php if($this->session->flashdata('user_registered')): ?>
-        <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_registered').'</p>'; ?>
-      <?php endif; ?>
-
-      <?php if($this->session->flashdata('post_created')): ?>
-        <?php echo '<p class="alert alert-success">'.$this->session->flashdata('post_created').'</p>'; ?>
-      <?php endif; ?>
-
-      <?php if($this->session->flashdata('post_updated')): ?>
-        <?php echo '<p class="alert alert-success">'.$this->session->flashdata('post_updated').'</p>'; ?>
-      <?php endif; ?>
-
-      <?php if($this->session->flashdata('category_created')): ?>
-        <?php echo '<p class="alert alert-success">'.$this->session->flashdata('category_created').'</p>'; ?>
-      <?php endif; ?>
-
-      <?php if($this->session->flashdata('post_deleted')): ?>
-        <?php echo '<p class="alert alert-success">'.$this->session->flashdata('post_deleted').'</p>'; ?>
-      <?php endif; ?>
-
-      
-
       <?php if($this->session->flashdata('user_loggedin')): ?>
         <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_loggedin').'</p>'; ?>
       <?php endif; ?>

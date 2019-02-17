@@ -14,10 +14,12 @@
 		}
 
 
-		// Check username exists
+		// Checks if username exists
 		public function check_username_exists($username){
-
+			// get the user by username
 			$query = $this->db->get_where('users', array('username' => $username));
+
+			// check if its empty
 			if(empty($query->row_array())){
 				return true;
 			} else {
@@ -25,18 +27,16 @@
 			}
 		}
 
-		// Check email exists
+		// Check if email exists
 		public function check_email_exists($email){
 
 			$query = $this->db->get_where('users', array('email' => $email));
+
 			if(empty($query->row_array())){
 				return true;
 			} else {
-
 				 return false;
-	
 			}
-
 		}
 
 		public function isLoggedIn(){
@@ -119,16 +119,10 @@
 			$result = $this->db->get_where('users', array('username' => $user_data['username'], 'password' => $user_data['hashed_password']));
 
 			if (!empty($result)) {
-				
 				return $result->row();
-
 			} else {
-
 				return false;
-
 			}
-
-			
 
 		}
 

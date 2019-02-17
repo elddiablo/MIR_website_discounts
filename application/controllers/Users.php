@@ -25,34 +25,31 @@
 			} else {
 				
 				// Get username
-				$username = $this->security->xss_clean($this->input->post('username'));
+					$username = $this->security->xss_clean($this->input->post('username'));
 
-				// Get and encrypt the password
-				$password = $this->security->xss_clean($this->input->post('password'));
+				// Get password
+					$password = $this->security->xss_clean($this->input->post('password'));
 
-				$hashed_password = $this->user_model->hashPassword($password);
+				// hash the pass
+					$hashed_password = $this->user_model->hashPassword($password);
 
-				$userdata = [
+				// form userdata
+					$userdata = [
+						'username' => $username,
+						'hashed_password' => $hashed_password
+					];
 
-					'username' => $username,
-					'hashed_password' => $hashed_password
-
-				];
-
-				// check for valid credentials
-
-				$user = $this->user_model->checkForCredentials($userdata);
-
-				##############################	
+				// Check for valid credentials
+					$user = $this->user_model->checkForCredentials($userdata);
 
 				if ($user) {
 					// Set a session and redirect
-					$user_data = array(
+						$user_data = array(
 
-						'user_id' => $user->id,
-						'username' => $user->username
+							'user_id' => $user->id,
+							'username' => $user->username
 
-					);
+						);
 
 					$this->user_model->loginUser($user_data);
 
@@ -67,14 +64,12 @@
 			}
 		}
 
-		// Log user out
 		public function logout(){
-
+			// log user out
 			$this->user_model->logoutUser();
 
 			// Set message
 			$this->session->set_flashdata('user_loggedout', 'You are now logged out');
-
 			redirect('users/login');
 		}
 
@@ -107,31 +102,21 @@
 			} else {
 
 				if ($this->user_model->isAdmin()) {
-
-					redirect('admin/index','refresh');
-					
+					redirect('admin/index','refresh');					
 				}
-
 
 				$user_id = $this->session->user_id;
 
-
 				$data = [
+					'objects' => $this->object_model->get_user_objects($user_id),
+					'username' => $this->session->username,
+					'user_id' => $user_id
+				];
 
-						'objects' => $this->object_model->get_user_objects($user_id),
-						'username' => $this->session->username,
-						'user_id' => $user_id
-						
-					];
-			
 				$this->load->view('users/templates/header', $data);
-
-				$this->load->view('templates/ajax_call_create_window', $data, FALSE);
-
+				$this->load->view('templates/ajax_call_create_window', $data);
 				$this->load->view('users/user_dashboard', $data);
-
 				$this->load->view('users/templates/footer');
-
 				$this->load->view('templates/additional-footer-standart');
 			}
 

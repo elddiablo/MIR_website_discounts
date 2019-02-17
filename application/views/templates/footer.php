@@ -1,8 +1,5 @@
 
-<!-- jQuery -->
-  <script src="<?= base_url(); ?>assets/js/jquery-3.2.1.min.js"></script>
-  <script src="<?= base_url(); ?>assets/js/jquery-migrate-3.0.0.min.js"></script>
-
+  
   <!-- Plugins -->
   <script src="<?= base_url(); ?>assets/plugin/bootstrap/js/popper.min.js"></script>
   <script src="<?= base_url(); ?>assets/plugin/bootstrap/js/bootstrap.min.js"></script>
