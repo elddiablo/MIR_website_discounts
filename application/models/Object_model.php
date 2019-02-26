@@ -76,25 +76,27 @@
 
 		}
 
-		public function get_most_popular_countries(){
+		public function get_most_popular_countries($limit = null){
 
 			$query = $this->db->query(
 			" 	SELECT obj_id
 			    FROM objects
-			    ORDER BY pop_counter DESC
-			    LIMIT 3
-			");
+			    ORDER BY pop_counter DESC 
+				LIMIT " . $limit);
 
 			$object_ids = $query->result_array();
 
+			// var_dump($object_ids);
+			// die();
+
 			$countries = [];
 
-			foreach ($object_ids as $object) {
-				$query = $this->db->query("SELECT obj_country_id, obj_id, obj_title FROM objects WHERE obj_id =". $object["obj_id"]);
+			foreach ($object_ids as $object_id) {
+				$query = $this->db->query("SELECT obj_country_id, obj_id, obj_title FROM objects WHERE obj_id =". $object_id['obj_id']);
 
-				$object = $query->result_array();
+				$object = $query->row();
 
-				$country = $this->get_object_country_by_country_id($object[0]['obj_country_id']);
+				$country = $this->country_model->get_country_by_id($object->obj_country_id);
 
 				$pile = array('country' => $country, 'object' => $object);
 
@@ -124,16 +126,15 @@
 			$has_deleted_contacts = $this->delete_object_phones_by_obj_id($id);
 
 			return $has_deleted_contacts;
-
-
 		}
 
 		public function delete_object_phones_by_obj_id($id) {
 			return $this->db->delete('phones', array("obj_id" => $id)) ? true : false;
 		}
 
-		public function get_all_objects() {
+		public function get_all_objects($limit = null) {
 			$result = $this->db->get_where('objects', array('status' => 1));
+			$limit ? $this->db->limit($limit) : null;
 			return $result->result_array();
 		}
 
@@ -168,59 +169,64 @@
 			}
 		}
 
-		public function get_object_name_by_id($id) {
-			$result = $this->db->get_where('objects', array('obj_id' => $id));
-			return $result->row()->obj_title;
+		public function get_object_prop($prop, $val) {
+			$result = null;
+			switch ($prop) {
+				case "name":
+					$query = $this->db->get_where('objects', array('obj_id' => $val));
+					$result = $query->row()->obj_title;
+					break;
+				case "inst":
+					$query = $this->db->get_where('institutions', array('id' => $val));
+					$result = $query->row();
+					break;
+				case "city":
+					$query = $this->db->get_where('cities', array('id' => $val));
+					$result = $query->row();
+					break;
+				case "country":
+					$result = $this->country_model->get_country_by_id($val);
+					break;
+				case "phones":
+					$query = $this->db->get_where('phones', array("obj_id" => $val));
+					$result = $query->result_array();
+					break;
+			}
+			return $result;
 		}
 
-		public function get_object_type_by_inst_id($id) {
-			$result = $this->db->get_where('institutions', array('id' => $id));
-			return $result->row();
-		}
 
-		public function get_object_city_by_city_id($id) {
-			$result = $this->db->get_where('cities', array('id' => $id));
-			return $result->row();
-		}
+			public function submit_object($object_id) {
+				$this->db->where('obj_id', $object_id);
+				if ($this->db->update('objects', array('status' => 1))) {
+					return 1;
+				} else {
+					return 0;
+				}
+				
+			}
+		// END
 
-		public function get_object_country_by_country_id($id) {
-			$result = $this->db->get_where('countries', array('id' => $id));
-			return $result->row();
-		}
-
-		public function get_object_phones_by_obj_id($id) {
-			$result = $this->db->get_where('phones', array("obj_id" => $id));
-			return $result->result_array();
-		}
-
-		public function add_images_to_object($id, $image) {
-			$this->db->insert('images', array('obj_id' => $id, 'image_name' => $image));
+ 	// IMAGES
+		public function add_images_to_object($object_id, $image) {
+			$this->db->insert('images', array('obj_id' => $object_id, 'image_name' => $image));
 			return true;
 		}
 
-		public function get_object_images($id) {
-			$result = $this->db->get_where('images', array('obj_id' => $id));
+		public function get_object_images($object_id) {
+			$result = $this->db->get_where('images', array('obj_id' => $object_id));
 			return $result->result_array();
 		}
 
-		public function get_object_num_of_images($id) {
-			$result = $this->db->get_where('images', array('obj_id' => $id));
+		public function get_object_num_of_images($object_id) {
+			$result = $this->db->get_where('images', array('obj_id' => $object_id));
 			return $result->num_rows();
 		}
-
-		public function submit_object($id) {
-			$this->db->where('obj_id', $id);
-			if ($this->db->update('objects', array('status' => 1))) {
-				return 1;
-			} else {
-				return 0;
-			}
-			
-		}
+	// END
 
 		public function update_popularity_counter($object_id){
-			$result = $this->db->get_where('objects', array('obj_id' => $object_id));
-			$old_counter = $result->row()->pop_counter;
+			$found_object = $this->db->get_where('objects', array('obj_id' => $object_id));
+			$old_counter = $found_object->row()->pop_counter;
 			$raised_counter = $old_counter + 1; // raise popularity counter by 1.
 
 			$data = [

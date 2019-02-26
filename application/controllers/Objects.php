@@ -24,9 +24,9 @@
 
 				$this->object_model->update_popularity_counter($id);
 
-				$object_type_single = $this->object_model->get_object_type_by_inst_id($found_object->obj_inst_id);
+				$object_type_single = $this->object_model->get_object_prop("inst", $found_object->obj_inst_id);
 
-				$phones = $this->object_model->get_object_phones_by_obj_id($found_object->obj_id);
+				$phones = $this->object_model->get_object_prop("phones", $found_object->obj_id);
 
 				$images = $this->object_model->get_object_images($valid_id);
 
@@ -385,7 +385,7 @@
 
                	$data = [
 
-       				'object_name' => $this->object_model->get_object_name_by_id($this->input->post('obj_id'))
+       				'object_name' => $this->object_model->get_object_prop("name", $this->input->post('obj_id'))
 
        			];
 	               			

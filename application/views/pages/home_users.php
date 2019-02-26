@@ -35,7 +35,7 @@
               quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
               consequat.</p>
               <p class="m-b-20px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
-              <a href="index.html#" class="btn btn-theme">Read More...</a>
+              <a href="/home_users" class="btn btn-theme">Read More...</a>
             </div> 
           </div>
           <div class="col-md-6">
@@ -114,14 +114,14 @@
 
           <?php foreach ($most_popular_countires as $country): ?>
             <div class="col-4 mx-auto select-animation">
-              <a href="objects/view/<?= $country['object'][0]['obj_id']; ?>" style="text-decoration: none; color: #212529;">
+              <a href="objects/view/<?= $country['object']->obj_id; ?>" style="text-decoration: none; color: #212529;">
                 <div class="team-box">
                   <div class="team-img">
                     <img src="https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX21584383.jpg" title="" alt="">
                   </div>
                   <div class="team-info">
                     <h4 class="font-alt"><?php echo $country['country']->name; ?></h4>
-                    <span><?php echo $country['object'][0]['obj_title']; ?></span>
+                    <span><?php echo $country['object']->obj_title; ?></span>
                   </div>
                 </div>
               </a>

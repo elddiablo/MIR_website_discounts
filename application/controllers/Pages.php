@@ -7,7 +7,7 @@
 			} else {
 
 				$data = $page === 'home_users' 
-					? ['most_popular_countires' => $this->object_model->get_most_popular_countries()]
+					? ['most_popular_countires' => $this->object_model->get_most_popular_countries(3)]
 					: null;
 
 				$this->load->view('templates/header');

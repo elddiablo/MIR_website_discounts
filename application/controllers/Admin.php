@@ -14,7 +14,7 @@
 				$data = [
 
 						'objects_unchecked' => $this->object_model->get_unchecked_objects(),
-						'objects' => $this->object_model->get_all_objects()
+						'objects' => $this->object_model->get_all_objects(10)
 						
 					];
 			

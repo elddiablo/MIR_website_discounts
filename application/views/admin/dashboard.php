@@ -32,9 +32,9 @@
 			  		); ?>
 			  		<tr class="object_<?= $object['obj_id']; ?> unchecked_object">
 				  		<td><?= $i; ?></td>
-				  		<td><?= $this->object_model->get_object_country_by_country_id($object['obj_country_id'])->name; ?></td>
-				  		<td><?= $this->object_model->get_object_city_by_city_id($object['obj_city_id'])->name; ?></td>
-				  		<td><?= $this->object_model->get_object_type_by_inst_id($object['obj_inst_id'])->name_single; ?></td>
+				  		<td><?= $this->object_model->get_object_prop("country", $object['obj_country_id'])->name; ?></td>
+				  		<td><?= $this->object_model->get_object_prop("city", $object['obj_city_id'])->name; ?></td>
+				  		<td><?= $this->object_model->get_object_prop("inst", $object['obj_inst_id'])->name_single; ?></td>
 				  		<td><?= $object['obj_title']; ?></td>
 				  		<td><?= $object['obj_short_describtion']; ?></td>
 				  		<td><?= $object['obj_discount']; ?>%</td>
@@ -107,9 +107,9 @@
 			  		); ?>
 			  		<tr class="object_<?= $object['obj_id']; ?>">
 				  		<td><?= $i; ?></td>
-				  		<td><?= $this->object_model->get_object_country_by_country_id($object['obj_country_id'])->name; ?></td>
-				  		<td><?= $this->object_model->get_object_city_by_city_id($object['obj_city_id'])->name; ?></td>
-				  		<td><?= $this->object_model->get_object_type_by_inst_id($object['obj_inst_id'])->name_single; ?></td>
+				  		<td><?= $this->object_model->get_object_prop("country", $object['obj_country_id'])->name; ?></td>
+				  		<td><?= $this->object_model->get_object_prop("city", $object['obj_city_id'])->name; ?></td>
+				  		<td><?= $this->object_model->get_object_prop("inst", $object['obj_inst_id'])->name_single; ?></td>
 				  		<td><?= $object['obj_title']; ?></td>
 				  		<td><?= $object['obj_short_describtion']; ?></td>
 				  		<td><?= $object['obj_discount']; ?>%</td>
