@@ -21,9 +21,9 @@
 
 			// check if its empty
 			if(empty($query->row_array())){
-				return true;
-			} else {
 				return false;
+			} else {
+				return true;
 			}
 		}
 
@@ -33,9 +33,9 @@
 			$query = $this->db->get_where('users', array('email' => $email));
 
 			if(empty($query->row_array())){
-				return true;
+				return false;
 			} else {
-				 return false;
+				 return true;
 			}
 		}
 

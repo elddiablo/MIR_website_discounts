@@ -133,8 +133,8 @@
 		}
 
 		public function get_all_objects($limit = null) {
+			$this->db->limit($limit ? $limit : null);
 			$result = $this->db->get_where('objects', array('status' => 1));
-			$limit ? $this->db->limit($limit) : null;
 			return $result->result_array();
 		}
 
