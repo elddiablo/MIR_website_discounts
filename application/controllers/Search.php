@@ -49,8 +49,6 @@
 
 			public function showAllResults() {
 
-				
-
 				if (empty($this->input->get('page'))) {
 
 					$page = 1;
@@ -88,8 +86,6 @@
 
 				}
 
-				
-
 				$results = $this->search_model->search_for_objects($city_id, $inst_id, $offset, $limit);
 
 				$data = [
@@ -99,12 +95,6 @@
 					'inst_id' => $inst_id,
 					'page' => $this->input->get('page')
 				];
-
-				
-
-
-
-
 
 				$this->load->view('templates/header');
 

@@ -14,17 +14,4 @@
   <script src="<?= base_url(); ?>assets/js/admin/custom.js"></script>
   <script src="<?= base_url(); ?>assets/js/create-form.js"></script>
 
-  <script>
-      $(document).ready(function(){
-        $(".owl-carousel").owlCarousel({
-            items: 1,
-            loop: true,
-            margin: 10,
-            dots: true,
-            autoHeight:true
-          });
-      });
-    </script>
-
-
 

@@ -2,14 +2,13 @@
 	class Object_model extends CI_Model {
 
 		public function create_object($new_object) {
-			
+
+			$new_user = null;
 
 			if ($new_object['is_ajax_request']) {
 
-				$user_id = $this->session->user_id;
-				$object_owner_email = $this->user_model->get_user_email_by_user_id($user_id); 
-				$new_user = null;
-
+				$object_owner_email = $this->user_model->get_user_email_by_user_id($this->session->user_id); 
+				
 			} else {
 
 				$object_owner_email = $new_object['owner_email'];
@@ -86,9 +85,6 @@
 
 			$object_ids = $query->result_array();
 
-			// var_dump($object_ids);
-			// die();
-
 			$countries = [];
 
 			foreach ($object_ids as $object_id) {
@@ -96,7 +92,7 @@
 
 				$object = $query->row();
 
-				$country = $this->country_model->get_country_by_id($object->obj_country_id);
+				$country = $this->get_country_by_id($object->obj_country_id);
 
 				$pile = array('country' => $country, 'object' => $object);
 
@@ -105,9 +101,6 @@
 			}
 
 			return $countries;
-
-			
-
 
 		}
 
@@ -123,13 +116,13 @@
 
 			$this->db->delete('objects', array('obj_id' => $id));
 
-			$has_deleted_contacts = $this->delete_object_phones_by_obj_id($id);
+			$has_deleted_contacts = $this->delete_object_phones($id);
 
 			return $has_deleted_contacts;
 		}
 
-		public function delete_object_phones_by_obj_id($id) {
-			return $this->db->delete('phones', array("obj_id" => $id)) ? true : false;
+		public function delete_object_phones($object_id) {
+			return $this->db->delete('phones', array("obj_id" => $object_id));
 		}
 
 		public function get_all_objects($limit = null) {
@@ -185,7 +178,8 @@
 					$result = $query->row();
 					break;
 				case "country":
-					$result = $this->country_model->get_country_by_id($val);
+					$query = $this->db->get_where('countries', array('id' => $val));
+					$result = $query->row();
 					break;
 				case "phones":
 					$query = $this->db->get_where('phones', array("obj_id" => $val));
@@ -194,6 +188,11 @@
 			}
 			return $result;
 		}
+
+			public function get_country_by_id($country_id) {
+				$query = $this->db->get_where('countries', array('id' => $country_id));
+				return $query->row();
+			}
 
 
 			public function submit_object($object_id) {

@@ -98,17 +98,23 @@
 
 		public function isAdmin() {
 
-			$result = $this->db->get_where('users', array('id' => $this->session->user_id));
+			if($this->session->user_id) {
+				$result = $this->db->get_where('users', array('id' => $this->session->user_id));
 
-			if ($result->row()->is_admin == 1) {
+				if ($result->row()->is_admin == 1) {
 
-				return true;
+					return true;
 
+				} else {
+
+					return false;
+
+				}
 			} else {
-
 				return false;
-
 			}
+
+			
 
 
 		}

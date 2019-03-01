@@ -24,8 +24,11 @@
 					// Get username and password
 						$username = $this->security->xss_clean($this->input->post('username'));
 						$password = $this->security->xss_clean($this->input->post('password'));
-					// Authorize
-						$user = $this->check_username_exists($username) ? $this->authorize($username, $password) : null;
+						$user = null;
+					// Authorize 
+						if($this->check_username_exists($username)) {
+							$user = $this->authorize($username, $password);
+						}
 
 					if ($user) {
 						// Set a session and redirect
@@ -48,25 +51,27 @@
 		}
 		public function dashboard() {
 
+		# [ Check if user is not logged in ]
 			if (!$this->user_model->isLoggedIn()) {
 
 				redirect('users/login');
 
 			} else {
+		# [ User is logged In ] #
 
-					$objects = $this->user_model->isAdmin() 
-								? $this->object_model->get_all_objects(4) 
-								: $this->object_model->get_user_objects($this->session->user_id);
+				$objects = $this->user_model->isAdmin() 
+							? $this->object_model->get_all_objects(10) 
+							: $this->object_model->get_user_objects($this->session->user_id);
 
 				$data = [
 					'objects' => $objects,
 					'username' => $this->session->username,
 					'user_id' => $this->session->user_id,
-					'isAdmin' => $this->user_model->isAdmin()
+					'isAdmin' => $this->user_model->isAdmin(),
+					'objects_unchecked' => $this->user_model->isAdmin() ? $this->object_model->get_unchecked_objects() : null
 				];
 
-				$data['objects_unchecked'] = $this->user_model->isAdmin() ? $this->object_model->get_unchecked_objects() : null;
-
+			# [ Adding additional info to every object  ] #
 				foreach ($data['objects'] as &$object) {
 					foreach ($object as $key => $value) {
 						$object['obj_country_name'] = $this->object_model->get_object_prop("country", $object['obj_country_id'])->name;
@@ -75,11 +80,18 @@
 						$object['image_number'] = $this->object_model->get_object_num_of_images($object['obj_id']);
 					}
 				}
-					$this->load->view('users/templates/header', $data);
-					$this->load->view('templates/ajax_call_create_window', $data);
-					$this->load->view('users/user_dashboard', $data);
+				
+				$this->load->view('users/templates/header', $data);
+				$this->load->view('templates/ajax_call_create_window', $data);
+				$this->load->view('users/user_dashboard', $data);
+
+				if($this->user_model->isAdmin()) {
+					$this->load->view('admin/templates/footer');
+				}  else {
 					$this->load->view('users/templates/footer');
 					$this->load->view('templates/additional-footer-standart');
+				}
+					
 			}
 
 		}

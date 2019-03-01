@@ -1,4 +1,6 @@
 <?php 
+	
+
 	class Objects extends CI_Controller {
 
 		public function view($id) {
@@ -7,34 +9,21 @@
 
 			$found_object = $this->object_model->get_object_by_id($valid_id);
 
-			if(empty($found_object)) {
+		# [ Getting all info about found object ] #
 
-				$message = 'No object found...';
+			empty($found_object) ? null : $this->object_model->update_popularity_counter($id);
 
-				$object_type_single = null;
+			$message = empty($found_object) ? 'No object found...' : null ;
 
-				$phones = null;
+			$object_type_single = empty($found_object) ? null : $this->object_model->get_object_prop("inst", $found_object->obj_inst_id);
 
-				$images = null;
+			$phones = empty($found_object) ? null : $this->object_model->get_object_prop("phones", $found_object->obj_id);
 
-				$object_type = null;
+			$images = empty($found_object) ? null : $this->object_model->get_object_images($valid_id);
 
-				
-			} else {
+			$object_type = empty($found_object) ? null : $object_type_single->name_single;
 
-				$this->object_model->update_popularity_counter($id);
-
-				$object_type_single = $this->object_model->get_object_prop("inst", $found_object->obj_inst_id);
-
-				$phones = $this->object_model->get_object_prop("phones", $found_object->obj_id);
-
-				$images = $this->object_model->get_object_images($valid_id);
-
-				$object_type = $object_type_single->name_single;
-
-				$message = null;
-				
-			}
+		# [ END ] #
 
 			$data = [
 				'object' => $found_object,
@@ -57,7 +46,7 @@
 
 				} else if($found_object->status == 0 && !$this->user_model->isAdmin()){
 
-					$data['message'] = 'This object is still being <br>processed...';
+					$data['message'] = 'Sorry, this object is still  <br>being processed...';
 
 					$this->load->view('templates/header');
 					$this->load->view('pages/message_page', $data);
@@ -73,9 +62,8 @@
 
 			}
 
-			# IF: there is no results
-
-			  else if(!empty($message) && empty($found_object)){
+		# IF: there is no results
+			else if(!empty($message) && empty($found_object)){
 				
 				$this->load->view('templates/header');
 				$this->load->view('pages/message_page', $data);
@@ -90,6 +78,7 @@
 
 		}
 
+	### [ CREATING THE OBJECT ] ###
 
 		public function create_object(){
 
@@ -115,6 +104,7 @@
 
 				$owner_name = $this->security->xss_clean($this->input->post('owner_name'));
 
+			# IF it is not an ajax request get DATA from the post
 			if (!$this->input->is_ajax_request()) {
 
 				$owner_email = $this->security->xss_clean($this->input->post('owner_email'));
@@ -124,7 +114,7 @@
 			}
 
 			# IF GET(USER_ID) == SESSION[USER_ID] { DOWNLOAD #1 TEMPLATE }
-			# ELSE IF USER_ID !== SESSION[USER_ID] { SHOW ERROR AND REDIRECT TO HOME }
+			# ELSE IF USER_ID !== SESSION[USER_ID] { SHOW ERROR AND REDIRECT HOME }
 			# ELSE { SHOW THE USUAL FORM }
 
 				if (!empty($country_id) && !empty($city_id) && !empty($inst_id)) {
@@ -134,30 +124,27 @@
 				}
 
 				$data = [
-            			'country_id' => $country_id,
-            			'city_id' => $city_id,
-            			'inst_id' => $inst_id,
-            			'name' => $name,
-            			'discount' => $discount,
-            			'owner_name' => $owner_name,
-            			'phone_number' => $phone_number,
-            			'website' => $website,
-            			'adress' => $adress,
-            			'short_describtion' => $short_describtion,
-            			'full_describtion' => $full_describtion,
-            			'has_data' => $has_data
+            			'country_id' => 		$country_id,
+            			'city_id' => 			$city_id,
+            			'inst_id' => 			$inst_id,
+            			'name' => 				$name,
+            			'discount' => 			$discount,
+            			'owner_name' => 		$owner_name,
+            			'phone_number' => 		$phone_number,
+            			'website' => 			$website,
+            			'adress' => 			$adress,
+            			'short_describtion' => 	$short_describtion,
+            			'full_describtion' => 	$full_describtion,
+            			'has_data' => 			$has_data
             		];
+
             	if(!$this->input->is_ajax_request()){
             		$data['owner_email'] = $owner_email;
             		$data['owner_password']	= $this->user_model->hashPassword($owner_password);
             		$data['is_ajax_request'] = false;
-            	} 
-
-            	if($this->input->is_ajax_request()){
+            	} else {
             		$data['is_ajax_request'] = true;
             	}
-				
-
 
 // --------___------___-----____--- AJAX  ERROR CHECKING --------___------___-----____--- //
 
@@ -229,9 +216,7 @@
                     $this->load->view('templates/footer');
                     $this->load->view('templates/additional-footer-partners');
 
-            }
-            	else
-            {		
+            } else {		
 
         		$created_object = $this->object_model->create_object($data);
 
@@ -256,16 +241,11 @@
 
         			}
 
-        			
-
         		} else {
 
         			die('Some error uccured...');
 
         		}
-
-	                
-                    
 
             }
 
@@ -289,35 +269,26 @@
 				
 			} else {
 
-				if($obj_id && $this->object_model->get_object_by_id($obj_id) && $this->user_model->isAdminOfAnObject($obj_id, $this->session->user_id)) {
-
-					$result = $this->object_model->delete_object($obj_id);
-
-
+				if($obj_id 
+					&& $this->object_model->get_object_by_id($obj_id) 
+					&& $this->user_model->isAdminOfAnObject($obj_id, $this->session->user_id)) {
+						$result = $this->object_model->delete_object($obj_id);
 				} else {
-
 					show_404();
-
 				}
 
 			}
-
-			#middleware
-			
-
-
-
-			
 		}
 
 
 
 		public function add_photos($obj_id = null, $is_ajax_successful = false) {
 
-
 			$object_id = $this->security->xss_clean($obj_id);
 
-			if($object_id && $this->object_model->get_object_by_id($object_id) && $this->user_model->isAdminOfAnObject($object_id, $this->session->user_id)){
+			if($object_id 
+				&& $this->object_model->get_object_by_id($object_id) 
+				&& $this->user_model->isAdminOfAnObject($object_id, $this->session->user_id)){
 
 				$data = [
 					'error' => null,
@@ -334,9 +305,6 @@
 					$this->load->view('templates/footer');
 					$this->load->view('templates/additional-footer-standart');
 				}
-
-
-	            
 
 			} else {
 
@@ -375,8 +343,7 @@
 	                	$error = null;
 	               		if ( ! $this->upload->do_upload('userfile')){
 	               			$error = array('error' => $this->upload->display_errors());
-	               		}
-	               		else {
+	               		} else {
 	               			$data = array('upload_data' => $this->upload->data());
 	               			$this->object_model->add_images_to_object($this->input->post('obj_id'), $_FILES['userfile']['name']);
 	               		}
@@ -384,19 +351,12 @@
                	}
 
                	$data = [
-
        				'object_name' => $this->object_model->get_object_prop("name", $this->input->post('obj_id'))
-
        			];
 	               			
        			$this->load->view('templates/header');
 				$this->load->view('pages/object_creation', $data);
 				$this->load->view('templates/footer');
-
-
-                
-
-				
 				    
 		} 
 
@@ -410,36 +370,25 @@
 		 	$object_owner_email = $this->object_model->get_object_by_id($this->security->xss_clean($this->input->post('object_id')))->obj_owner_email;
 		 	$generated_key = $this->generate_key();
 
-		 	// Setting the config
+		 // Setting the config
 		 	$this->mailSetUp();
 				
-			// Sending an email to the user
+		// Sending an email to the user
 		 	$this->email->from('test@hotel-shato.od.ua', 'M.I.R.');
 		 	$this->email->to($email);
 		 	$this->email->subject('MIR - Discount at'. $object_name);
 		 	$this->email->message('Hi, '. $name .', your discount code: '. $generated_key. ' You can show this code to the owner of the object or place you chose, and you should be given an appropriate discount as shown on our website.'. ' Thanks for being with us!');
 		 	$this->email->send();
 
-
-		 	// Sending to 
-		 		/*
-				 	$this->mailSetUp();
-				 	$this->email->from('test@hotel-shato.od.ua', 'M.I.R.');
-				 	$this->email->to($object_owner_email);
-				 	$this->email->subject('MIR - Discount at'. $object_name);
-				 	$this->email->message('Hi, owner of the '. $object_name .', you have a customer with this code: '. $generated_key. ' this is the code a customer received after visiting your object, be ready to meet this customer soon.'. ' Thanks for being with us!');
-				 	$this->email->send(); */
+		 // Sending mail to owner
+		 	$this->email->from('test@hotel-shato.od.ua', 'M.I.R.');
+		 	$this->email->to($object_owner_email);
+		 	$this->email->subject('MIR - Discount at'. $object_name);
+		 	$this->email->message('Hi, owner of the '. $object_name .', you have a customer with this code: '. $generated_key. ' this is the code a customer received after visiting your object, be ready to meet this customer soon.'. ' Thanks for being with us!');
+		 	$this->email->send(); 
 
 
-		 redirect('/get_discount_success_page');
-		 	
-		 // NOTE: ADD a function that sends a mail to the owner of an object to
-		 // inform them about coming customer and their keycode	
-
-
-		 // echo $this->email->print_debugger();
-
-
+		 	redirect('/get_discount_success_page');
 		 }
 
 		 public function generate_key($len = 5) {
@@ -453,16 +402,12 @@
 		        $pass[] = $alphabet[$n];
 		    }
 
-		    // echo implode($pass);
-
-
 		    return implode($pass); //turn the array into a string
 		}
 
 		public function mailSetUp($smtp_settings = null) {
 
 			$this->load->library('email');
-
 
 			$config['protocol'] = 'smtp';
 			$config['charset'] = 'utf-8';
