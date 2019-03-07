@@ -3,6 +3,7 @@ var isLoadingScreenSeen;
 function loadingScreen() {
 
   var delayingTime = Math.floor((Math.random() + 0.2) * 1000);
+  // alert(delayingTime);
 
    if(!isLoadingScreenSeen) {
     $("#loading").fadeIn();

@@ -15,7 +15,7 @@ function onCountrySelect() {
     $('#services').css('padding-bottom', '165px');
 
 
-    $('#select_spy').html('Select city');
+    $('#select_spy').html('Выберите город');
 
     if ($( "#inst_select select" ).length > 0) {
 
@@ -50,7 +50,7 @@ function citySelect(){
 
   $( "#city_select select" ).change(function() {
 
-    $('#select_spy').html('Select Institution');
+    $('#select_spy').html('Выберите Предприятие');
 
     $.ajax({
       url: '/search/get_institutions',
@@ -72,7 +72,7 @@ function onInstSelect () {
 
   $( "#inst_select select" ).change(function() {
       hideResultsSection();
-      $('#select_spy').html('Push the search button');
+      $('#select_spy').html('Нажмите кнопку поиск');
       $('#submit_button').fadeIn(700);
       executeSearch();
   });
